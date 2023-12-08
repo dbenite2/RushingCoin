@@ -562,7 +562,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef35c4a79d7a49f4ba9df610de007878, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationTime: 5
+  rotationSpeed: 0.5
+  maxRotations: 4
 --- !u!1 &1229585128
 GameObject:
   m_ObjectHideFlags: 0
@@ -940,7 +941,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   plane: {fileID: 1229585128}
-  yourObject: {fileID: 3791306813836958179}
+  player: {fileID: 3791306813836958179}
+  textScore: {fileID: 0}
 --- !u!4 &1327090998
 Transform:
   m_ObjectHideFlags: 0
@@ -1195,7 +1197,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9307e6531933bab4095b54319d5b906a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chargedSpeed: 2
+  chargedSpeed: 25000
   _terrain: {fileID: 1229585128}
 --- !u!33 &4989434991186258500
 MeshFilter:

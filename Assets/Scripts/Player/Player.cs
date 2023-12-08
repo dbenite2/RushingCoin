@@ -1,56 +1,57 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class Player : MonoBehaviour
-{
+public class Player : MonoBehaviour {
     private float raycastDistance = 1f;
-    [SerializeField]
-    private float chargedSpeed = 100f;
 
     [SerializeField]
-    private GameObject _terrain;
+    private float chargedSpeed = 10f;
 
     private KeyCode chargePlayerSpeed = KeyCode.Space;
 
     private Rigidbody _rigidbody;
+
     private bool applyForwardForce;
-    private bool suddenStop;
+
+    private bool gameStarted;
+
+    public bool GameStarted {
+        get {
+            return gameStarted;
+        }
+    }
+
     private float xInput;
+
     private int coinLayer = 1 << 7;
 
-    void Start()
-    {
+    private float maxSpeed = 25000;
+
+    void Start() {
         _rigidbody = GetComponent<Rigidbody>();
     }
 
     void Update() {
         xInput = Input.GetAxis("Horizontal");
         
-        if (Input.GetKey(KeyCode.Space)) {
-            suddenStop = true;
-            chargedSpeed += 100;
+        if (Input.GetKey(chargePlayerSpeed) && !gameStarted) {
+            chargedSpeed += 10;
         }
-        if (Input.GetKeyUp(chargePlayerSpeed)) {
+        if (Input.GetKeyUp(chargePlayerSpeed) && !gameStarted) {
             applyForwardForce = true;
+            gameStarted = true;
         }
-        if (Input.GetKeyDown(KeyCode.S)) {
-            suddenStop = true;
-        }
-
     }
 
     void FixedUpdate() {
+        // If the player release the spacebar, a force will be applied to it in the Z axis of the world
         if (applyForwardForce) {
+            // If the ammount of speed exceeds the maximum allowed. it will be set to the maximum.
+            if (chargedSpeed > maxSpeed) {
+                chargedSpeed = maxSpeed;
+            }
             _rigidbody.AddForce(Vector3.forward * chargedSpeed, ForceMode.Force);
             _rigidbody.angularVelocity = Vector3.zero;
-            chargedSpeed = 100f;
             applyForwardForce = false;
-        }
-        if (suddenStop) {
-            _rigidbody.velocity = Vector3.zero;
-            suddenStop = false;
         }
         _rigidbody.AddForce(new Vector3(xInput, 0, 0) * _rigidbody.velocity.z);
         detectCollision();
